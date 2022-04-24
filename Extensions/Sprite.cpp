@@ -110,6 +110,70 @@ void* TFT_eSprite::createSprite(int16_t w, int16_t h, uint8_t frames)
   return nullptr;
 }
 
+/***************************************************************************************
+** Function name:           createSprite
+** Description:             Create a sprite (bitmap) of defined width and height
+***************************************************************************************/
+// cast returned value to (uint8_t*) for 8 bit or (uint16_t*) for 16 bit colours
+void* TFT_eSprite::createSprite(uint8_t* imagePointer, int16_t w, int16_t h, uint8_t frames) {
+  if ( _created ) return _img8_1;
+
+  if ( w < 1 || h < 1 ) return nullptr;
+
+  _iwidth  = _dwidth  = _bitwidth = w;
+  _iheight = _dheight = h;
+
+  cursor_x = 0;
+  cursor_y = 0;
+
+  // Default scroll rectangle and gap fill colour
+  _sx = 0;
+  _sy = 0;
+  _sw = w;
+  _sh = h;
+  _scolor = TFT_BLACK;
+
+  _img8   = imagePointer;
+  _img8_1 = _img8;
+  _img8_2 = _img8;
+  _img    = (uint16_t*) _img8;
+  _img4   = _img8;
+
+  if ( (_bpp == 16) && (frames > 1) ) {
+    _img8_2 = _img8 + (w * h * 2 + 1);
+  }
+
+  // ESP32 only 16bpp check
+  //if (esp_ptr_dma_capable(_img8_1)) Serial.println("DMA capable Sprite pointer _img8_1");
+  //else Serial.println("Not a DMA capable Sprite pointer _img8_1");
+  //if (esp_ptr_dma_capable(_img8_2)) Serial.println("DMA capable Sprite pointer _img8_2");
+  //else Serial.println("Not a DMA capable Sprite pointer _img8_2");
+
+  if ( (_bpp == 8) && (frames > 1) ) {
+    _img8_2 = _img8 + (w * h + 1);
+  }
+
+  if ( (_bpp == 4) && (_colorMap == nullptr)) createPalette(default_4bit_palette);
+
+  // This is to make it clear what pointer size is expected to be used
+  // but casting in the user sketch is needed due to the use of void*
+  if ( (_bpp == 1) && (frames > 1) )
+  {
+    w = (w+7) & 0xFFF8;
+    _img8_2 = _img8 + ( (w>>3) * h + 1 );
+  }
+
+  if (_img8)
+  {
+    _created = true;
+    rotation = 0;
+    setViewport(0, 0, _dwidth, _dheight);
+    setPivot(_iwidth/2, _iheight/2);
+    return _img8_1;
+  }
+
+  return nullptr;
+}
 
 /***************************************************************************************
 ** Function name:           getPointer
