@@ -115,7 +115,7 @@ void* TFT_eSprite::createSprite(int16_t w, int16_t h, uint8_t frames)
 ** Description:             Create a sprite (bitmap) of defined width and height
 ***************************************************************************************/
 // cast returned value to (uint8_t*) for 8 bit or (uint16_t*) for 16 bit colours
-void* TFT_eSprite::createSprite(uint8_t* imagePointer, int16_t w, int16_t h, uint8_t frames) {
+void* TFT_eSprite::createSprite(void* imagePointer, int16_t w, int16_t h, uint8_t frames) {
   if ( _created ) return _img8_1;
 
   if ( w < 1 || h < 1 ) return nullptr;
@@ -133,7 +133,7 @@ void* TFT_eSprite::createSprite(uint8_t* imagePointer, int16_t w, int16_t h, uin
   _sh = h;
   _scolor = TFT_BLACK;
 
-  _img8   = imagePointer;
+  _img8   = (uint8_t*) imagePointer;
   _img8_1 = _img8;
   _img8_2 = _img8;
   _img    = (uint16_t*) _img8;

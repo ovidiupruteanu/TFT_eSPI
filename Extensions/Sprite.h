@@ -20,7 +20,7 @@ class TFT_eSprite : public TFT_eSPI {
            //  - 1 byte per pixel for 8 bit colour
            //  - 2 bytes per pixel for 16 bit color depth
   void*    createSprite(int16_t width, int16_t height, uint8_t frames = 1);
-  void*    createSprite(uint8_t* imagePointer, int16_t width, int16_t height, uint8_t frames = 1);
+  void*    createSprite(void* imagePointer, int16_t width, int16_t height, uint8_t frames = 1);
 
            // Returns a pointer to the sprite or nullptr if not created, user must cast to pointer type
   void*    getPointer(void);
