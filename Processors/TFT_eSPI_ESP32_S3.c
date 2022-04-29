@@ -2,6 +2,8 @@
         // TFT_eSPI driver functions for ESP32 processors //
         ////////////////////////////////////////////////////
 
+// Temporarily a separate file to TFT_eSPI_ESP32.c until board package low level API stabilises
+
 ////////////////////////////////////////////////////////////////////////////////////////
 // Global variables
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +144,6 @@ void TFT_eSPI::busDir(uint32_t mask, uint8_t mode)
   pinMode(TFT_D5, mode);
   pinMode(TFT_D6, mode);
   pinMode(TFT_D7, mode);
-  return;
 }
 
 /***************************************************************************************

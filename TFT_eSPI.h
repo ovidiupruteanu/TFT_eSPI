@@ -16,7 +16,7 @@
 #ifndef _TFT_eSPIH_
 #define _TFT_eSPIH_
 
-#define TFT_ESPI_VERSION "2.4.51"
+#define TFT_ESPI_VERSION "2.4.61"
 
 // Bit level feature flags
 // Bit 0 set: viewport capability
@@ -872,12 +872,16 @@ class TFT_eSPI : public Print { friend class TFT_eSprite; // Sprite class has ac
 // Load the Touch extension
 #ifdef TOUCH_CS
   #if defined (TFT_PARALLEL_8_BIT) || defined (RP2040_PIO_INTERFACE)
-    #error >>>>------>> Touch functions not supported in 8/16 bit parallel mode or with RP2040 PIO.
+    #if !defined(DISABLE_ALL_LIBRARY_WARNINGS)
+      #error >>>>------>> Touch functions not supported in 8/16 bit parallel mode or with RP2040 PIO.
+    #endif
   #else
     #include "Extensions/Touch.h"        // Loaded if TOUCH_CS is defined by user
   #endif
 #else
-    #warning >>>>------>> TOUCH_CS pin not defined, TFT_eSPI touch functions will not be available!
+    #if !defined(DISABLE_ALL_LIBRARY_WARNINGS)
+      #warning >>>>------>> TOUCH_CS pin not defined, TFT_eSPI touch functions will not be available!
+    #endif
 #endif
 
 // Load the Anti-aliased font extension
